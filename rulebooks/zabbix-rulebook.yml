@@ -1,0 +1,15 @@
+- name: Zabbix webhook listener
+  hosts: all
+
+  sources:
+    - ansible.eda.webhook:
+        host: 0.0.0.0
+        port: 5001
+
+  rules:
+    - name: Fix time sync problem
+      condition: event.payload.trigger_name is search("System time is out of sync")
+      action:
+        run_job_template:
+          name: Fix Time Sync
+          organization: Default
