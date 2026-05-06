@@ -7,9 +7,9 @@
         port: 5001
 
   rules:
-    - name: Fix time sync problem
-      condition: event.payload.trigger_name is search("System time is out of sync")
+    - name: High CPU detected 
+      condition: event.payload.cpu_value | int > 90
       action:
         run_job_template:
-          name: Fix Time Sync
+          name: Deploy-APP
           organization: Default
