@@ -1,0 +1,33 @@
+---
+- name: Chcek cpu usage
+  hosts: all
+  gather_facts: no
+
+  tasks:
+   - name: Get CPU load
+     shell: "top -bn1 | grep Cpu | awk '{print $2}'"
+     register: cpu_result
+
+   - name: Save CPU value
+     set_fact:
+       cpu_usage: "{{ cpu_result.stdout | float }}"
+
+- name: Choose best vm (lowest cpu usage)
+  hosts: localhost
+  gather_facts: no
+
+  tasks:
+   - name: cmpare cpu values
+     set_fact:
+       selected_host: >-
+          {{
+              'ansibl-vm2'
+              if hostvars['ansible-vm2'].cpu_usage < hostvars['ansible-vm3'].cpu_usage
+              else 'ansible-vm3'
+
+
+           }}
+   - name: show selcted vm
+     debug:
+       msg: "selcted vm is {{ selected_host }}"
+
