@@ -11,5 +11,5 @@
       condition: true
       action:
         run_job_template:
-          name: Deply
+          name: Deploy
           organization: Default
