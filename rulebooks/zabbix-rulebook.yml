@@ -8,7 +8,7 @@
 
   rules:
     - name: High CPU detected 
-      condition: "event.payload.cpu_value is defined and int(event.payload.cpu_value) >= 90"
+      condition: event.payload.cpu_value is defined and (event.payload.cpu_value | int >= 90)
       action:
         run_job_template:
           name: Deploy
