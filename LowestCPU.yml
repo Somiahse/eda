@@ -9,6 +9,12 @@
    - name: Show VM3 CPU
      debug:
        msg: "ansible-vm3 CPU = {{ hostvars['ansible-vm3'].cpu_usage }}"
+   - name: Show VM2 CPU
+ debug:
+   msg: "ansible-vm2 CPU = {{ hostvars['ansible-vm2'].cpu_usage }}"
+- name: Show VM3 CPU
+ debug:
+   msg: "ansible-vm3 CPU = {{ hostvars['ansible-vm3'].cpu_usage }}"
    - name: Compare CPU values
      set_fact:
        selected_host: >-
