@@ -1,33 +1,30 @@
 ---
-- name: Chcek cpu usage
-  hosts: all
-  gather_facts: no
-
-  tasks:
-   - name: Get CPU load
-     shell: "top -bn1 | grep Cpu | awk '{print $2}'"
-     register: cpu_result
-
-   - name: Save CPU value
+- name: Check CPU usage
+ hosts: all
+ gather_facts: no
+ tasks:
+   - name: Get CPU idle percentage
+     shell: "top -bn1 | grep '%Cpu' | awk '{print $8}'"
+     register: cpu_idle
+   - name: Calculate CPU used percentage
      set_fact:
-       cpu_usage: "{{ cpu_result.stdout | float }}"
-
-- name: Choose best vm (lowest cpu usage)
-  hosts: localhost
-  gather_facts: no
-
-  tasks:
-   - name: cmpare cpu values
+       cpu_usage: "{{ 100 - (cpu_idle.stdout | float) }}"
+   - name: Show CPU usage
+     debug:
+       msg: "{{ inventory_hostname }} CPU usage is {{ cpu_usage }}%"
+- name: Choose best VM with lowest CPU usage
+ hosts: localhost
+ gather_facts: no
+ tasks:
+   - name: Compare CPU values
      set_fact:
        selected_host: >-
-          {{
-              'ansibl-vm2'
-              if hostvars['ansible-vm2'].cpu_usage < hostvars['ansible-vm3'].cpu_usage
-              else 'ansible-vm3'
-
-
-           }}
-   - name: show selcted vm
+         {{
+           'ansible-vm2'
+           if hostvars['ansible-vm2'].cpu_usage < hostvars['ansible-vm3'].cpu_usage
+           else 'ansible-vm3'
+         }}
+   - name: Show selected VM
      debug:
-       msg: "selcted vm is {{ selected_host }}"
+       msg: "Selected VM is {{ selected_host }}"
 
