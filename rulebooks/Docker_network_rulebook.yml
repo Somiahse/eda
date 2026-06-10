@@ -8,7 +8,7 @@
 
   rules:
     - name: FIx SoftdPAC continer IP configurtaion 
-      condition: event.payload.trigger is defined and "SoftdPAC NETWORK DETECTED" in event.payload.trigger
+      condition: event.payload.trigger is defined and "SoftdPAC network detected" in event.payload.trigger
       action:
         run_job_template:
           name: SoftdPAC Network
