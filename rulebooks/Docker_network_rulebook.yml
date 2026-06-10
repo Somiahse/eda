@@ -11,7 +11,7 @@
       condition: event.payload.trigger is defined and "SoftdPAC NETWORK DETECTED" in event.payload.trigger
       action:
         run_job_template:
-          name: Remediate SoftdPAC Network
+          name: SoftdPAC Network
           organization: Default
           job_args:
             extra_vars:
