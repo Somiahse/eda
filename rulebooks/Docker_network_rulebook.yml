@@ -17,3 +17,8 @@
             extra_vars:
               target_host: "{{event.payload.host}}"
               ip_info: "{{event.payload.value}}"
+      
+      when:
+        - event.payload is defined
+        - event.payload.host is defined
+        - event.payload.value is defined
