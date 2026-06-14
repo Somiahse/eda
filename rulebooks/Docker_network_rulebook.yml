@@ -16,5 +16,9 @@
           job_args:
             extra_vars:
               target_host: "{{event.payload.host}}"
-              target_ip: "{{event.payload.value}}
-              
+              #target_ip: "{{event.payload.value}}
+    - name: Debug 
+      condition: event.payload.trigger is defined 
+      action:  
+        debug:
+          msg: "{{ event }}"
