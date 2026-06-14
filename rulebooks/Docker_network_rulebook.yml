@@ -7,18 +7,19 @@
         port: 5001
 
   rules:
-    - name: FIx SoftdPAC continer IP configurtaion 
-      condition: event.payload.trigger is defined and "SoftdPAC network detected" in event.payload.trigger
-      action:
-        run_job_template:
-          name: SoftdPAC Network
-          organization: Default
-          job_args:
-            extra_vars:
-              target_host: "{{event.payload.host}}"
-              ip_info: "{{event.payload.value}}"
-      
-      when:
-        - event.payload is defined
-        - event.payload.host is defined
-        - event.payload.value is defined
+    - name: Fix SoftdPAC container IP configuration
+  condition: >
+    event.payload is defined and
+    event.payload.trigger is defined and
+    "SoftdPAC network detected" in event.payload.trigger and
+    event.payload.host is defined and
+    event.payload.value is defined
+
+  action:
+    run_job_template:
+      name: SoftdPAC Network
+      organization: Default
+      job_args:
+        extra_vars:
+          target_host: "{{ event.payload.host }}"
+          ip_info: "{{ event.payload.value }}"
