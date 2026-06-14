@@ -16,4 +16,5 @@
           job_args:
             extra_vars:
               target_host: "{{event.payload.host}}"
+              target_ip: "{{ result }}"
               
